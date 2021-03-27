@@ -11,7 +11,7 @@ import {
 import MapLayer from "../components/MapLayer";
 import ProgressBar from "../components/ProgressBar";
 import ServerStatusContainer from "../components/ServerStatusContainer";
-import { ServerStatus } from "../utils/serverUtils";
+import { ServerStatus, getStatusCodeColor } from "../utils/serverUtils";
 import { formatTime } from "../utils/timeUtils";
 
 interface IProps {
@@ -110,7 +110,9 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
   const listItem = (array: LogEntry[]) =>
     array.map((item: LogEntry) => (
       <List.Item>
-        <Label horizontal>{item.status}</Label>
+        <Label color={getStatusCodeColor(item.status)} horizontal>
+          {item.status}
+        </Label>
         <List.Content>
           <List.Header>{item.message}</List.Header>
           <List.Description>{formatTime(item.time)}</List.Description>

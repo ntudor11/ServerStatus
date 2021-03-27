@@ -1,4 +1,4 @@
-import { SemanticICONS } from "semantic-ui-react";
+import { SemanticICONS, SemanticCOLORS } from "semantic-ui-react";
 
 // types of status that server can have
 export enum ServerStatus {
@@ -52,3 +52,24 @@ export const getStatusProps: Function = (status: ServerStatus) => {
         };
     }
   };
+
+  export const getStatusCodeColor: Function = (code: number) => {
+    let color: SemanticCOLORS;
+    switch(code) {
+      case 200:
+        color = "green";
+        return color;
+      case 400:
+        color = "red";
+        return color;
+      case 401:
+        color = "yellow";
+        return color;
+      case 404:
+        color = "black";
+        return color;
+      case 500:
+        color = "black";
+        return color;
+    }
+  }
