@@ -10,6 +10,7 @@ import {
 } from "semantic-ui-react";
 import { ServerStatus, getStatusProps } from "../utils/serverUtils";
 import { formatTime, elapsedTime } from "../utils/timeUtils";
+import { noSpace } from "../utils/stringUtils";
 
 interface IProps {
   id: number;
@@ -20,11 +21,11 @@ interface IProps {
 }
 
 const ServerCard: React.FC<IProps> = (props: IProps) => {
-  const { id, serverName, statusTimeStarted, status, avgUptime } = props;
+  const { serverName, statusTimeStarted, status, avgUptime } = props;
 
   return (
     <Grid.Column>
-      <Card fluid href={`/server/${id}`}>
+      <Card fluid href={`/server/${noSpace(serverName)}`}>
         <Card.Description>
           <Grid columns={2} padded className="middle aligned">
             <Grid.Column width={4} textAlign="center">

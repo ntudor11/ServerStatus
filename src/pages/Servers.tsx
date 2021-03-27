@@ -7,8 +7,10 @@ const Servers: React.FC = () => {
   return (
     <div>
       <Container>
-        <Header as="h1">Remote Servers</Header>
-        <Grid centered columns={2} stackable>
+        <Header className="pageHeader" as="h1">
+          Remote Servers
+        </Header>
+        <Grid columns={2} stackable>
           <ServerCard
             id={1}
             serverName="Server 1"

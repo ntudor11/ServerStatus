@@ -8,3 +8,7 @@
 .progressBar .label {
   font-weight: 100 !important;
 }
+
+.pageHeader {
+  margin: 1em !important;
+}
