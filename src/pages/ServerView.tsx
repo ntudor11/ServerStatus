@@ -158,8 +158,8 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
             </p>
           </Grid.Column>
         </Grid>
-        <Grid columns={2} stackable>
-          <Grid.Column>
+        <Grid columns={2} stackable reversed="mobile">
+          <Grid.Column width={10}>
             <Segment>
               <Label attached="top left">
                 <Icon name="terminal" />
@@ -170,7 +170,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
               </List>
             </Segment>
           </Grid.Column>
-          <Grid.Column textAlign="center">
+          <Grid.Column width={6} textAlign="center">
             <ProgressBar
               percent={avgUptime}
               label="Average uptime for the last 30 days"

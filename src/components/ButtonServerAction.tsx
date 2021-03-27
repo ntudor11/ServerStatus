@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Icon } from "semantic-ui-react";
-import { getButtonAction } from "../utils/serverUtils";
+import { getButtonAction, ServerStatus } from "../utils/serverUtils";
 
-const ButtonServerAction: React.FC<any> = (props: any) => {
-  const { status } = props;
+const ButtonServerAction: React.FC<{ status: ServerStatus }> = ({ status }) => {
+  //   const { status } = props;
   return (
     <Button
       icon
