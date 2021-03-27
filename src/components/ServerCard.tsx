@@ -8,18 +8,20 @@ import {
   Popup,
   Container,
 } from "semantic-ui-react";
+import { ServerStatus, getStatusProps } from "../utils/serverUtils";
 import { formatTime, elapsedTime } from "../utils/timeUtils";
 
 interface IProps {
   id: number;
   serverName: string;
   statusTimeStarted: Date;
-  status: string;
+  status: ServerStatus;
   avgUptime: number;
 }
 
 const ServerCard: React.FC<IProps> = (props: IProps) => {
   const { id, serverName, statusTimeStarted, status, avgUptime } = props;
+
   return (
     <Grid.Column>
       <Card fluid href={`/server/${id}`}>
@@ -29,14 +31,14 @@ const ServerCard: React.FC<IProps> = (props: IProps) => {
               <Popup
                 content={
                   <>
-                    <p>Up since {formatTime(statusTimeStarted)}</p>
+                    <p>Since {formatTime(statusTimeStarted)}</p>
                     <p>Elapsed time: {elapsedTime(statusTimeStarted)}</p>
                   </>
                 }
                 trigger={
-                  <Container>
-                    <Icon color="green" size="big" name="check circle" />
-                    <p>{status}</p>
+                  <Container style={{ color: getStatusProps(status)?.color }}>
+                    <Icon size="big" name={getStatusProps(status)?.icon} />
+                    <p>{getStatusProps(status)?.name}</p>
                   </Container>
                 }
               />

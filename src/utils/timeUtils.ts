@@ -4,4 +4,4 @@ export const formatTime = (time: Date) =>
     moment(time).format("LLL");
 
 export const elapsedTime = (time: Date) =>
-    moment(time).fromNow();
+    moment(time).fromNow(true);
