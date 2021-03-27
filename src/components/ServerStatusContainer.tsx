@@ -6,13 +6,23 @@ import { ServerStatus, getStatusProps } from "../utils/serverUtils";
 interface IProps {
   statusTimeStarted: Date;
   status: ServerStatus;
+  position?:
+    | "top center"
+    | "top left"
+    | "top right"
+    | "bottom right"
+    | "bottom left"
+    | "right center"
+    | "left center"
+    | "bottom center"
+    | undefined;
 }
 
 const ServerStatusContainer: React.FC<IProps> = (props: IProps) => {
-  const { statusTimeStarted, status } = props;
+  const { statusTimeStarted, status, position } = props;
   return (
     <Popup
-      position="top center"
+      position={position || "top center"}
       content={
         <>
           <p>Since {formatTime(statusTimeStarted)}</p>

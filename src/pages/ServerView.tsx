@@ -11,6 +11,7 @@ import {
 import MapLayer from "../components/MapLayer";
 import ProgressBar from "../components/ProgressBar";
 import ServerStatusContainer from "../components/ServerStatusContainer";
+import ButtonServerAction from "../components/ButtonServerAction";
 import { ServerStatus, getStatusCodeColor } from "../utils/serverUtils";
 import { formatTime } from "../utils/timeUtils";
 
@@ -68,7 +69,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
       serverName: name,
       ipAddress: "27.231.234.25",
       statusTimeStarted: new Date(),
-      status: ServerStatus.INACTIVE,
+      status: ServerStatus.ACTIVE,
       avgUptime: 98.5,
       serverLog: [
         {
@@ -93,7 +94,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     // fetch ip details from 3rd party API
-    fetch(`http://ip-api.com/json/${server?.ipAddress}`)
+    fetch(`http://ip-api.com/json/${ipAddress}`)
       .then((data) => data.json())
       .then((data: any) => {
         // add geolocation details to server state object
@@ -128,10 +129,23 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
         <MapLayer addressCoords={[51.505, -0.09]} />
       </div>
       <Container>
-        <Header as="h1">
-          <Icon name="server" />
-          {serverName}
-        </Header>
+        <Grid columns={2}>
+          <Grid.Column>
+            <Header as="h1">
+              <Icon name="server" />
+              {serverName}
+            </Header>
+          </Grid.Column>
+          <Grid.Column textAlign="right">
+            <ServerStatusContainer
+              statusTimeStarted={statusTimeStarted}
+              status={status}
+              position="top right"
+            />
+            <div style={{ marginTop: "2em" }} />
+            <ButtonServerAction status={status} />
+          </Grid.Column>
+        </Grid>
         <Grid columns={2}>
           <Grid.Column>
             <p>IP: {ipAddress}</p>
@@ -157,10 +171,6 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
             </Segment>
           </Grid.Column>
           <Grid.Column textAlign="center">
-            <ServerStatusContainer
-              statusTimeStarted={statusTimeStarted}
-              status={status}
-            />
             <ProgressBar
               percent={avgUptime}
               label="Average uptime for the last 30 days"
