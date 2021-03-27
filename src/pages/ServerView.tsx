@@ -1,20 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { Container, Grid, Header } from "semantic-ui-react";
 import MapLayer from "../components/MapLayer";
+import ProgressBar from "../components/ProgressBar";
 import { ServerStatus } from "../utils/serverUtils";
 
-const ServerView: React.FC = (props: any) => {
+interface IProps {
+  match: {
+    params: any;
+  };
+}
+
+const ServerView: React.FC<IProps> = (props: IProps) => {
   const [server, setServer] = useState<any>({});
   const { name } = props.match.params;
+  const {
+    serverId,
+    serverName,
+    ipAddress,
+    statusTimeStarted,
+    status,
+    avgUptime,
+    lastMessage,
+  } = server;
 
   useEffect(() => {
     setServer({
       ...server,
       serverId: 1,
       serverName: name,
+      ipAddress: "192.168.0.1",
       statusTimeStarted: new Date(),
       status: ServerStatus.ACTIVE,
       avgUptime: 98.5,
+      lastMessage: "Server is listening on port 8000",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -28,7 +46,15 @@ const ServerView: React.FC = (props: any) => {
       </div>
       <Container>
         <Grid columns={2} stackable>
-          <Header as="h1">{server.serverName}</Header>
+          <Grid.Column>
+            <Header as="h1">{serverName}</Header>
+          </Grid.Column>
+          <Grid.Column>
+            <ProgressBar
+              percent={avgUptime}
+              label="Average uptime for the last 30 days"
+            />
+          </Grid.Column>
         </Grid>
       </Container>
     </div>

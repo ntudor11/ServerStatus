@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  Grid,
-  Card,
-  Header,
-  Icon,
-  Progress,
-  Popup,
-  Container,
-} from "semantic-ui-react";
+import { Grid, Card, Header, Icon, Popup, Container } from "semantic-ui-react";
 import { ServerStatus, getStatusProps } from "../utils/serverUtils";
 import { formatTime, elapsedTime } from "../utils/timeUtils";
 import { noSpace } from "../utils/stringUtils";
+import ProgressBar from "./ProgressBar";
 
 interface IProps {
   id: number;
@@ -49,11 +42,8 @@ const ServerCard: React.FC<IProps> = (props: IProps) => {
                 <Icon name="server" />
                 {serverName}
               </Header>
-              <Progress
-                className="progressBar ui basic"
+              <ProgressBar
                 percent={avgUptime}
-                indicating
-                progress
                 label="Average uptime for the last 30 days"
               />
             </Grid.Column>
