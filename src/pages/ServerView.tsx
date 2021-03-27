@@ -8,6 +8,7 @@ import {
   List,
   Segment,
 } from "semantic-ui-react";
+import { NavLink } from "react-router-dom";
 import MapLayer from "../components/MapLayer";
 import ProgressBar from "../components/ProgressBar";
 import ServerStatusContainer from "../components/ServerStatusContainer";
@@ -125,6 +126,13 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
 
   return (
     <div>
+      <NavLink exact to="/">
+        <Icon
+          name="arrow alternate circle left"
+          className="backArrow"
+          size="huge"
+        />
+      </NavLink>
       <div className="mapPlaceholder">
         <MapLayer addressCoords={[51.505, -0.09]} />
       </div>

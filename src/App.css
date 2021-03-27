@@ -18,6 +18,18 @@
 }
 
 /* SERVER VIEW */
+.backArrow {
+  position: absolute;
+  color: #707070;
+  z-index: 999999;
+  top: 1em;
+  left: 1em;
+}
+
+.backArrow:hover {
+  color: #505050;
+}
+
 .mapPlaceholder {
   min-height: 300px;
   height: 25vh;
