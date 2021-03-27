@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Container, Grid, Header, Icon } from "semantic-ui-react";
+import {
+  Container,
+  Grid,
+  Header,
+  Icon,
+  Label,
+  List,
+  Segment,
+} from "semantic-ui-react";
 import MapLayer from "../components/MapLayer";
 import ProgressBar from "../components/ProgressBar";
+import ServerStatusContainer from "../components/ServerStatusContainer";
 import { ServerStatus } from "../utils/serverUtils";
+import { formatTime } from "../utils/timeUtils";
 
 interface IProps {
   match: {
@@ -10,14 +20,21 @@ interface IProps {
   };
 }
 
+type LogEntry = {
+  time: Date;
+  message: string;
+  status: number;
+};
+
 interface IState {
   id: string;
   serverName: string;
   ipAddress: string;
+  ipDetails: any;
   statusTimeStarted: Date;
   status: ServerStatus;
   avgUptime: number;
-  lastMessage: string;
+  serverLog: LogEntry[];
 }
 
 const ServerView: React.FC<IProps> = (props: IProps) => {
@@ -28,7 +45,8 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
     statusTimeStarted: new Date(),
     status: ServerStatus.ACTIVE,
     avgUptime: 100,
-    lastMessage: "",
+    serverLog: [],
+    ipDetails: {},
   });
   const [coords, setCoords] = useState<number[]>([]);
   const { name } = props.match.params;
@@ -36,10 +54,11 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
     id,
     serverName,
     ipAddress,
+    ipDetails,
     statusTimeStarted,
     status,
     avgUptime,
-    lastMessage,
+    serverLog,
   } = server;
 
   useEffect(() => {
@@ -49,9 +68,25 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
       serverName: name,
       ipAddress: "27.231.234.25",
       statusTimeStarted: new Date(),
-      status: ServerStatus.ACTIVE,
+      status: ServerStatus.INACTIVE,
       avgUptime: 98.5,
-      lastMessage: "Server is listening on port 8000",
+      serverLog: [
+        {
+          time: new Date("2016-06-22 19:10:25"),
+          message: "Server is listening on port 8000",
+          status: 200,
+        },
+        {
+          time: new Date("2016-06-22 19:10:25"),
+          message: "Page not found",
+          status: 404,
+        },
+        {
+          time: new Date("2016-06-22 19:10:25"),
+          message: "User does not have access to this content",
+          status: 401,
+        },
+      ],
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -71,6 +106,18 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // returns list item for each log entry from server
+  const listItem = (array: LogEntry[]) =>
+    array.map((item: LogEntry) => (
+      <List.Item>
+        <Label horizontal>{item.status}</Label>
+        <List.Content>
+          <List.Header>{item.message}</List.Header>
+          <List.Description>{formatTime(item.time)}</List.Description>
+        </List.Content>
+      </List.Item>
+    ));
+
   console.log(server);
 
   return (
@@ -79,14 +126,39 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
         <MapLayer addressCoords={[51.505, -0.09]} />
       </div>
       <Container>
+        <Header as="h1">
+          <Icon name="server" />
+          {serverName}
+        </Header>
+        <Grid columns={2}>
+          <Grid.Column>
+            <p>IP: {ipAddress}</p>
+            <p>Server ID: {id}</p>
+          </Grid.Column>
+          <Grid.Column textAlign="right">
+            <p>
+              <Icon name="point" />
+              {`${ipDetails.city}, ${ipDetails.regionName}, ${ipDetails.country}`}
+            </p>
+          </Grid.Column>
+        </Grid>
         <Grid columns={2} stackable>
           <Grid.Column>
-            <Header as="h1">
-              <Icon name="server" />
-              {serverName}
-            </Header>
+            <Segment>
+              <Label attached="top left">
+                <Icon name="terminal" />
+                Server Log
+              </Label>
+              <List animated divided relaxed>
+                {listItem(serverLog)}
+              </List>
+            </Segment>
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column textAlign="center">
+            <ServerStatusContainer
+              statusTimeStarted={statusTimeStarted}
+              status={status}
+            />
             <ProgressBar
               percent={avgUptime}
               label="Average uptime for the last 30 days"

@@ -1,7 +1,7 @@
 import React from "react";
-import { Grid, Card, Header, Icon, Popup, Container } from "semantic-ui-react";
-import { ServerStatus, getStatusProps } from "../utils/serverUtils";
-import { formatTime, elapsedTime } from "../utils/timeUtils";
+import { Grid, Card, Header, Icon } from "semantic-ui-react";
+import ServerStatusContainer from "../components/ServerStatusContainer";
+import { ServerStatus } from "../utils/serverUtils";
 import { noSpace } from "../utils/stringUtils";
 import ProgressBar from "./ProgressBar";
 
@@ -22,19 +22,9 @@ const ServerCard: React.FC<IProps> = (props: IProps) => {
         <Card.Description>
           <Grid columns={2} padded className="middle aligned">
             <Grid.Column width={4} textAlign="center">
-              <Popup
-                content={
-                  <>
-                    <p>Since {formatTime(statusTimeStarted)}</p>
-                    <p>Elapsed time: {elapsedTime(statusTimeStarted)}</p>
-                  </>
-                }
-                trigger={
-                  <Container style={{ color: getStatusProps(status)?.color }}>
-                    <Icon size="big" name={getStatusProps(status)?.icon} />
-                    <p>{getStatusProps(status)?.name}</p>
-                  </Container>
-                }
+              <ServerStatusContainer
+                statusTimeStarted={statusTimeStarted}
+                status={status}
               />
             </Grid.Column>
             <Grid.Column width={12} className="middle aligned">
