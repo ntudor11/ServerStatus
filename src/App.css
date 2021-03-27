@@ -1,5 +1,9 @@
 /* SERVERS PAGE */
 
+.mainServersImg {
+  margin-top: 2em;
+}
+
 .progressBar {
   margin-left: auto;
   margin-right: auto;

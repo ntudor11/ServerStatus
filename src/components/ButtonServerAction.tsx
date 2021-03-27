@@ -3,7 +3,6 @@ import { Button, Icon } from "semantic-ui-react";
 import { getButtonAction, ServerStatus } from "../utils/serverUtils";
 
 const ButtonServerAction: React.FC<{ status: ServerStatus }> = ({ status }) => {
-  //   const { status } = props;
   return (
     <Button
       icon
