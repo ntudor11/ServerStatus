@@ -8,35 +8,50 @@ import {
   Popup,
   Container,
 } from "semantic-ui-react";
+import { formatTime, elapsedTime } from "../utils/timeUtils";
 
-const ServerCard: React.FC = (props: any) => {
+interface IProps {
+  id: number;
+  serverName: string;
+  statusTimeStarted: Date;
+  status: string;
+  avgUptime: number;
+}
+
+const ServerCard: React.FC<IProps> = (props: IProps) => {
+  const { id, serverName, statusTimeStarted, status, avgUptime } = props;
   return (
     <Grid.Column>
-      <Card fluid href="/server/id">
+      <Card fluid href={`/server/${id}`}>
         <Card.Description>
           <Grid columns={2} padded className="middle aligned">
             <Grid.Column width={4} textAlign="center">
               <Popup
-                content="Up since 23.03.2012"
+                content={
+                  <>
+                    <p>Up since {formatTime(statusTimeStarted)}</p>
+                    <p>Elapsed time: {elapsedTime(statusTimeStarted)}</p>
+                  </>
+                }
                 trigger={
                   <Container>
                     <Icon color="green" size="big" name="check circle" />
-                    <p>Active</p>
+                    <p>{status}</p>
                   </Container>
                 }
               />
             </Grid.Column>
             <Grid.Column width={12} className="middle aligned">
-              <Header as="h3" className="">
+              <Header as="h3">
                 <Icon name="server" />
-                Server Name
+                {serverName}
               </Header>
               <Progress
                 className="progressBar ui basic"
-                percent={97.5}
+                percent={avgUptime}
                 indicating
                 progress
-                label="Average Uptime"
+                label="Average uptime for the last 30 days"
               />
             </Grid.Column>
           </Grid>
