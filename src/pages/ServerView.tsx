@@ -28,12 +28,26 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
       ...server,
       serverId: 1,
       serverName: name,
-      ipAddress: "192.168.0.1",
+      ipAddress: "27.231.234.25",
       statusTimeStarted: new Date(),
       status: ServerStatus.ACTIVE,
       avgUptime: 98.5,
       lastMessage: "Server is listening on port 8000",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // fetch ip details from 3rd party API
+    fetch(`http://ip-api.com/json/${ipAddress}`)
+      .then((data) => data.json())
+      .then((data: Object) => {
+        // add geolocation details to server state object
+        setServer((prevServerState: any) => ({
+          ...prevServerState,
+          ipDetails: data,
+        }));
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
