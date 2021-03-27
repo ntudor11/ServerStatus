@@ -12,3 +12,11 @@
 .pageHeader {
   margin: 1em !important;
 }
+
+/* SERVER VIEW */
+.mapPlaceholder {
+  min-height: 300px;
+  height: 25vh;
+  background-color: silver;
+  margin-bottom: 3em;
+}
