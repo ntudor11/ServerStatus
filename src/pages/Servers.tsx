@@ -12,7 +12,7 @@ const Servers: React.FC = () => {
         </Header>
         <Grid columns={2} stackable>
           <ServerCard
-            id={1}
+            id="1"
             serverName="Server 1"
             statusTimeStarted={new Date("2016-06-22 19:10:25")}
             status={ServerStatus.INACTIVE}

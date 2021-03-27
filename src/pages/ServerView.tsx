@@ -10,12 +10,30 @@ interface IProps {
   };
 }
 
+interface IState {
+  id: string;
+  serverName: string;
+  ipAddress: string;
+  statusTimeStarted: Date;
+  status: ServerStatus;
+  avgUptime: number;
+  lastMessage: string;
+}
+
 const ServerView: React.FC<IProps> = (props: IProps) => {
-  const [server, setServer] = useState<any>({});
+  const [server, setServer] = useState<IState>({
+    id: "",
+    serverName: "",
+    ipAddress: "",
+    statusTimeStarted: new Date(),
+    status: ServerStatus.ACTIVE,
+    avgUptime: 100,
+    lastMessage: "",
+  });
   const [coords, setCoords] = useState<number[]>([]);
   const { name } = props.match.params;
   const {
-    serverId,
+    id,
     serverName,
     ipAddress,
     statusTimeStarted,
@@ -27,7 +45,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
   useEffect(() => {
     setServer({
       ...server,
-      serverId: 1,
+      id: "1",
       serverName: name,
       ipAddress: "27.231.234.25",
       statusTimeStarted: new Date(),
@@ -40,19 +58,16 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     // fetch ip details from 3rd party API
-    if (server && server.ipAddress !== undefined) {
-      fetch(`http://ip-api.com/json/${server?.ipAddress}`)
-        .then((data) => data.json())
-        .then((data: any) => {
-          // add geolocation details to server state object
-          setServer((prevServerState: any) => ({
-            ...prevServerState,
-            ipDetails: data,
-          }));
-          setCoords([data.lat, data.lon]);
-        });
-    }
-
+    fetch(`http://ip-api.com/json/${server?.ipAddress}`)
+      .then((data) => data.json())
+      .then((data: any) => {
+        // add geolocation details to server state object
+        setServer((prevServerState: any) => ({
+          ...prevServerState,
+          ipDetails: data,
+        }));
+        setCoords([data.lat, data.lon]);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

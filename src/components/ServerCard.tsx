@@ -6,7 +6,7 @@ import { noSpace } from "../utils/stringUtils";
 import ProgressBar from "./ProgressBar";
 
 interface IProps {
-  id: number;
+  id: string;
   serverName: string;
   statusTimeStarted: Date;
   status: ServerStatus;
