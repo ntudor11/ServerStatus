@@ -87,19 +87,26 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
         });
   }, [ipAddress]);
 
-  // returns list item for each log entry from server
+  // returns list item for each log entry from server if list is not empty
   const listItem = (array: LogEntry[]) =>
-    array.map((item: LogEntry) => (
+    array.length ? (
+      array.map((item: LogEntry) => (
+        <List.Item>
+          <Label color={getStatusCodeColor(item.status)} horizontal>
+            {item.status}
+          </Label>
+          <List.Content>
+            <List.Header>{item.message}</List.Header>
+            <List.Description>{formatTime(item.time)}</List.Description>
+          </List.Content>
+        </List.Item>
+      ))
+    ) : (
       <List.Item>
-        <Label color={getStatusCodeColor(item.status)} horizontal>
-          {item.status}
-        </Label>
-        <List.Content>
-          <List.Header>{item.message}</List.Header>
-          <List.Description>{formatTime(item.time)}</List.Description>
-        </List.Content>
+        <List.Icon name="attention" />
+        <List.Content>No messages could be found.</List.Content>
       </List.Item>
-    ));
+    );
 
   console.log(server);
 
