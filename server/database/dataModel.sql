@@ -163,5 +163,113 @@ insert into server_messages (
     '4e92804d-2552-4468-866e-8801d8b49378'
 );
 
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    200,
+    '2021-02-04 01:20:00',
+    'Server listening on port 4000',
+    '0c28e843-c727-4e8c-b90e-4177fd51cda1'
+);
+
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    500,
+    '2020-12-21 18:04:24',
+    'Internal server error',
+    '0c28e843-c727-4e8c-b90e-4177fd51cda1'
+);
+
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    401,
+    '2021-01-03 17:26:42',
+    'Unauthorized access',
+    '402c6cd2-23bd-49b7-9792-57e90b17603a'
+);
+
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    200,
+    '2021-01-27 18:57:21',
+    'Server running on port 8080',
+    'ce86e679-9de4-4c4d-8f68-9c73089c1a2d'
+);
+
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    404,
+    '2021-03-21 11:04:58',
+    'Page not found',
+    'ce86e679-9de4-4c4d-8f68-9c73089c1a2d'
+);
+
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    200,
+    '2021-01-03 17:26:42',
+    'OK',
+    '402c6cd2-23bd-49b7-9792-57e90b17603a'
+);
+
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    200,
+    '2019-07-15 06:00:42',
+    'OK',
+    'e09bfc7f-f7e5-4ef0-a94c-4b9fbbab5d3c'
+);
+
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    401,
+    '2020-05-29 06:00:42',
+    'Unauthorized access',
+    'e09bfc7f-f7e5-4ef0-a94c-4b9fbbab5d3c'
+);
+
+insert into server_messages (
+    status_code,
+    time_stamp,
+    message,
+    server_id
+) values (
+    500,
+    '2017-10-13 21:48:04',
+    'Internal server error',
+    'e09bfc7f-f7e5-4ef0-a94c-4b9fbbab5d3c'
+);
+
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO serverstatus;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO serverstatus;
