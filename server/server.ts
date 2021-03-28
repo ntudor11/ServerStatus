@@ -50,4 +50,19 @@ app.get("/api/server/:serverId", async (req: Request, res: Response) => {
   });
 });
 
+app.post("/api/changeStatus", async (req: Request, res: Response) => {
+  const { serverId, serverStatus } = req.body;
+  const now = Date.now();
+
+  try {
+    await db.none(queries.updateServerStatus, [serverStatus, now, serverId]);
+    return res.send({
+      status: 200,
+      message: "ok",
+    });
+  } catch (err) {
+    return res.send({ err });
+  }
+});
+
 app.listen(PORT, () => console.log(`⚡️ Server running on port ${PORT} ⚡️`));
