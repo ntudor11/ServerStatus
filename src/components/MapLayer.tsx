@@ -1,7 +1,7 @@
 import React from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L, { LatLngExpression } from "leaflet";
+import L from "leaflet";
 import MapPin from "../images/map-pin.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 

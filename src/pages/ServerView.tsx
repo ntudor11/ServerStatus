@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -15,6 +15,8 @@ import ServerStatusContainer from "../components/ServerStatusContainer";
 import ButtonServerAction from "../components/ButtonServerAction";
 import { ServerStatus, getStatusCodeColor } from "../utils/serverUtils";
 import { formatTime } from "../utils/timeUtils";
+import { changeStatus } from "../utils/axiosUtils";
+import MessageNotification from "../components/MessageNotification";
 
 interface IProps {
   match: {
@@ -51,6 +53,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
     ipDetails: {},
   });
   const [coords, setCoords] = useState<number[]>([]);
+  const [showNotification, setShowNotification] = useState<boolean>(false);
   const { serverId } = props.match.params;
   const {
     id,
@@ -63,14 +66,17 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
     serverLog,
   } = server;
 
-  useEffect(() => {
-    // fetch server data from API
-    fetch(`/api/server/${serverId}`)
-      .then((data) => data.json())
-      .then((data: any) => {
-        setServer(data);
-      });
+  // async fetch function to call in useEffect and on button click
+  const fetchApi = useCallback(async () => {
+    const fetchData = await fetch(`/api/server/${serverId}`);
+    const data = await fetchData.json();
+    return setServer(data);
   }, [serverId]);
+
+  useEffect(() => {
+    // call fetch data from API
+    fetchApi();
+  }, [fetchApi]);
 
   useEffect(() => {
     // fetch ip details from 3rd party API
@@ -90,8 +96,8 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
   // returns list item for each log entry from server if list is not empty
   const listItem = (array: LogEntry[]) =>
     array.length ? (
-      array.map((item: LogEntry) => (
-        <List.Item>
+      array.map((item: LogEntry, i: number) => (
+        <List.Item key={i}>
           <Label color={getStatusCodeColor(item.status)} horizontal>
             {item.status}
           </Label>
@@ -112,7 +118,14 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
     ipDetails &&
     `${ipDetails.city}, ${ipDetails.regionName}, ${ipDetails.country}`;
 
-  console.log(server);
+  const isStatusActive = serverStatus === ServerStatus.ACTIVE;
+
+  const handleDismiss = () => {
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
 
   return (
     <div>
@@ -143,7 +156,29 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
               position="top right"
             />
             <div style={{ marginTop: "2em" }} />
-            <ButtonServerAction status={serverStatus} />
+            <ButtonServerAction
+              status={serverStatus}
+              onButtonClick={() =>
+                changeStatus(
+                  serverId,
+                  isStatusActive ? ServerStatus.INACTIVE : ServerStatus.ACTIVE,
+                  isStatusActive ? 503 : 200,
+                  isStatusActive
+                    ? "Service Unavailable"
+                    : "OK - Waiting for new requests"
+                ).then((res: any) => {
+                  fetchApi();
+                  handleDismiss();
+                })
+              }
+            />
+            <MessageNotification
+              showNotification={showNotification}
+              isStatusActive={isStatusActive}
+              text={`You have successfully ${
+                isStatusActive ? "started" : "paused"
+              } the server.`}
+            />
           </Grid.Column>
         </Grid>
         <Grid columns={2}>
