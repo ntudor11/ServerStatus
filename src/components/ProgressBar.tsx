@@ -15,6 +15,7 @@ const ProgressBar: React.FC<IProps> = (props: IProps) => {
       indicating
       progress
       label={label}
+      size="small"
     />
   );
 };
