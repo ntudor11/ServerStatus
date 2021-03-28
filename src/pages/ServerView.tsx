@@ -17,6 +17,7 @@ import { ServerStatus, getStatusCodeColor } from "../utils/serverUtils";
 import { formatTime } from "../utils/timeUtils";
 import { changeStatus } from "../utils/axiosUtils";
 import MessageNotification from "../components/MessageNotification";
+import moment from "moment";
 
 interface IProps {
   match: {
@@ -96,17 +97,24 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
   // returns list item for each log entry from server if list is not empty
   const listItem = (array: LogEntry[]) =>
     array.length ? (
-      array.map((item: LogEntry, i: number) => (
-        <List.Item key={i}>
-          <Label color={getStatusCodeColor(item.status)} horizontal>
-            {item.status}
-          </Label>
-          <List.Content>
-            <List.Header>{item.message}</List.Header>
-            <List.Description>{formatTime(item.time)}</List.Description>
-          </List.Content>
-        </List.Item>
-      ))
+      array
+        .sort((a: LogEntry, b: LogEntry) => {
+          if (moment(a.time) === moment(b.time)) {
+            return 0;
+          }
+          return moment(b.time) > moment(a.time) ? 1 : -1;
+        })
+        .map((item: LogEntry, i: number) => (
+          <List.Item key={i}>
+            <Label color={getStatusCodeColor(item.status)} horizontal>
+              {item.status}
+            </Label>
+            <List.Content>
+              <List.Header>{item.message}</List.Header>
+              <List.Description>{formatTime(item.time)}</List.Description>
+            </List.Content>
+          </List.Item>
+        ))
     ) : (
       <List.Item>
         <List.Icon name="attention" />
