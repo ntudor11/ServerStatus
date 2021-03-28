@@ -24,7 +24,7 @@ const Servers: React.FC = () => {
       .then((data: any) => {
         setServers(data);
       });
-  }, [servers]);
+  }, []);
 
   // sort and map through servers array
   const getServerCards = (array: Server[]) =>
