@@ -18,31 +18,26 @@ export const getButtonAction: Function = (status: ServerStatus) => {
       return {
         iconName: "pause",
         text: "Pause",
-        onClick: () => console.log(`change status to + ${INACTIVE}`),
       };
     case INACTIVE:
       return {
         iconName: "play",
         text: "Start",
-        onClick: () => console.log(`change status to + ${ACTIVE}`),
       };
     case PANIC:
       return {
         iconName: "play",
         text: "Force start",
-        onClick: () => console.log(`change status to + ${ACTIVE}`),
       };
     case NOT_RESPONDING:
       return {
         iconName: "play",
         text: "Restart",
-        onClick: () => console.log(`change status to + ${ACTIVE}`),
       };
     default:
       return {
         iconName: "play",
         text: "Start",
-        onClick: () => console.log(`change status to + ${ACTIVE}`),
       };
   }
 };
