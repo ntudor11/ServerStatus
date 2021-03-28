@@ -103,5 +103,8 @@ export const getStatusCodeColor: Function = (code: number) => {
     case 500:
       color = "black";
       return color;
+    default:
+      color = "black";
+      return color;
   }
 };
