@@ -108,6 +108,10 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
       </List.Item>
     );
 
+  const geoLocation =
+    ipDetails &&
+    `${ipDetails.city}, ${ipDetails.regionName}, ${ipDetails.country}`;
+
   console.log(server);
 
   return (
@@ -120,7 +124,9 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
         />
       </NavLink>
       <div className="mapPlaceholder">
-        {coords.length && <MapLayer addressCoords={coords} />}
+        {coords.length && (
+          <MapLayer addressCoords={coords} geoLocation={geoLocation} />
+        )}
       </div>
       <Container>
         <Grid columns={2}>
@@ -148,8 +154,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
           <Grid.Column textAlign="right">
             <p>
               <Icon name="point" />
-              {ipDetails &&
-                `${ipDetails.city}, ${ipDetails.regionName}, ${ipDetails.country}`}
+              {geoLocation}
             </p>
           </Grid.Column>
         </Grid>

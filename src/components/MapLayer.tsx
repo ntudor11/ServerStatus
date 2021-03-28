@@ -1,7 +1,7 @@
 import React from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import MapPin from "../images/map-pin.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
@@ -16,10 +16,11 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 interface IProps {
   addressCoords: any;
+  geoLocation: string;
 }
 
 const MapLayer: React.FC<IProps> = (props: IProps) => {
-  const { addressCoords } = props;
+  const { addressCoords, geoLocation } = props;
 
   return (
     <MapContainer
@@ -33,7 +34,7 @@ const MapLayer: React.FC<IProps> = (props: IProps) => {
       />
       <Marker position={addressCoords}>
         <Popup>
-          <p>demo map placeholder</p>
+          <p>{geoLocation}</p>
         </Popup>
       </Marker>
     </MapContainer>
