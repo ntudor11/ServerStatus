@@ -12,5 +12,6 @@ module.exports = {
     readServer: sql("queries/readServer.sql"),
     readServerMessages: sql("queries/readServerMessages.sql"),
     updateServerStatus: sql("queries/updateServerStatus.sql"),
+    writeServerMessage: sql("queries/writeServerMessage.sql"),
   },
 };

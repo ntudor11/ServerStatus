@@ -51,11 +51,20 @@ app.get("/api/server/:serverId", async (req: Request, res: Response) => {
 });
 
 app.post("/api/changeStatus", async (req: Request, res: Response) => {
-  const { serverId, serverStatus } = req.body;
+  const { serverId, serverStatus, statusCode, message } = req.body;
+  console.log(statusCode, message);
   const now = Date.now();
 
   try {
     await db.none(queries.updateServerStatus, [serverStatus, now, serverId]);
+
+    await db.none(queries.writeServerMessage, [
+      statusCode,
+      now,
+      message,
+      serverId,
+    ]);
+
     return res.send({
       status: 200,
       message: "ok",
