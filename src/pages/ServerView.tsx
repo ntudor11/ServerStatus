@@ -34,7 +34,7 @@ interface IState {
   ipAddress: string;
   ipDetails: any;
   statusTimeStarted: Date;
-  status: ServerStatus;
+  serverStatus: ServerStatus;
   avgUptime: number;
   serverLog: LogEntry[];
 }
@@ -45,68 +45,47 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
     serverName: "",
     ipAddress: "",
     statusTimeStarted: new Date(),
-    status: ServerStatus.ACTIVE,
+    serverStatus: ServerStatus.ACTIVE,
     avgUptime: 100,
     serverLog: [],
     ipDetails: {},
   });
   const [coords, setCoords] = useState<number[]>([]);
-  const { name } = props.match.params;
+  const { serverId } = props.match.params;
   const {
     id,
     serverName,
     ipAddress,
     ipDetails,
     statusTimeStarted,
-    status,
+    serverStatus,
     avgUptime,
     serverLog,
   } = server;
 
   useEffect(() => {
-    setServer({
-      ...server,
-      id: "1",
-      serverName: name,
-      ipAddress: "27.231.234.25",
-      statusTimeStarted: new Date(),
-      status: ServerStatus.ACTIVE,
-      avgUptime: 98.5,
-      serverLog: [
-        {
-          time: new Date("2016-06-22 19:10:25"),
-          message: "Server is listening on port 8000",
-          status: 200,
-        },
-        {
-          time: new Date("2016-06-22 19:10:25"),
-          message: "Page not found",
-          status: 404,
-        },
-        {
-          time: new Date("2016-06-22 19:10:25"),
-          message: "User does not have access to this content",
-          status: 401,
-        },
-      ],
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // fetch server data from API
+    fetch(`/api/server/${serverId}`)
+      .then((data) => data.json())
+      .then((data: any) => {
+        setServer(data);
+      });
+  }, [serverId]);
 
   useEffect(() => {
     // fetch ip details from 3rd party API
-    fetch(`http://ip-api.com/json/${ipAddress}`)
-      .then((data) => data.json())
-      .then((data: any) => {
-        // add geolocation details to server state object
-        setServer((prevServerState: any) => ({
-          ...prevServerState,
-          ipDetails: data,
-        }));
-        setCoords([data.lat, data.lon]);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    ipAddress &&
+      fetch(`http://ip-api.com/json/${ipAddress}`)
+        .then((data) => data.json())
+        .then((data: any) => {
+          // add geolocation details to server state object
+          setServer((prevServerState: any) => ({
+            ...prevServerState,
+            ipDetails: data,
+          }));
+          setCoords([data.lat, data.lon]);
+        });
+  }, [ipAddress]);
 
   // returns list item for each log entry from server
   const listItem = (array: LogEntry[]) =>
@@ -134,7 +113,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
         />
       </NavLink>
       <div className="mapPlaceholder">
-        <MapLayer addressCoords={[51.505, -0.09]} />
+        {coords.length && <MapLayer addressCoords={coords} />}
       </div>
       <Container>
         <Grid columns={2}>
@@ -147,11 +126,11 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
           <Grid.Column textAlign="right">
             <ServerStatusContainer
               statusTimeStarted={statusTimeStarted}
-              status={status}
+              status={serverStatus}
               position="top right"
             />
             <div style={{ marginTop: "2em" }} />
-            <ButtonServerAction status={status} />
+            <ButtonServerAction status={serverStatus} />
           </Grid.Column>
         </Grid>
         <Grid columns={2}>
@@ -162,7 +141,8 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
           <Grid.Column textAlign="right">
             <p>
               <Icon name="point" />
-              {`${ipDetails.city}, ${ipDetails.regionName}, ${ipDetails.country}`}
+              {ipDetails &&
+                `${ipDetails.city}, ${ipDetails.regionName}, ${ipDetails.country}`}
             </p>
           </Grid.Column>
         </Grid>

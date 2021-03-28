@@ -3,7 +3,6 @@ import { Grid, Card, Header, Icon } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
 import ServerStatusContainer from "../components/ServerStatusContainer";
 import { ServerStatus } from "../utils/serverUtils";
-import { noSpace } from "../utils/stringUtils";
 import ProgressBar from "./ProgressBar";
 
 interface IProps {
@@ -15,11 +14,11 @@ interface IProps {
 }
 
 const ServerCard: React.FC<IProps> = (props: IProps) => {
-  const { serverName, statusTimeStarted, status, avgUptime } = props;
+  const { id, serverName, statusTimeStarted, status, avgUptime } = props;
 
   return (
     <Grid.Column>
-      <NavLink exact to={`/server/${noSpace(serverName)}`}>
+      <NavLink exact to={`/server/${id}`}>
         <Card fluid>
           <Card.Description>
             <Grid columns={2} padded className="middle aligned">

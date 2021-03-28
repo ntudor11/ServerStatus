@@ -13,7 +13,7 @@ const App: React.FC = () => {
           <Route exact path="/" render={() => <Servers />} />
           <Route
             exact
-            path="/server/:name"
+            path="/server/:serverId"
             render={(props: any) => <ServerView {...props} />}
           />
         </Switch>
