@@ -12,14 +12,14 @@ export const isAuth = (userType?: string | string[]) => (
 ) => {
   const { token } = req.cookies;
   if (!token) {
-    res.send({ error: "Unauthorized access: No token provided" });
+    res.status(401).send({ error: "Unauthorized access: No token provided" });
   } else {
     jwt.verify(token, secretKey, (err: any, decoded: any) => {
       if (err) {
-        res.send({ error: "Unauthorized: Invalid token" });
+        res.status(401).send({ error: "Unauthorized: Invalid token" });
       } else if (userType && !userType.includes(decoded.type)) {
         next();
-        res.send({ error: "Unauthorized: Invalid user type" });
+        res.status(401).send({ error: "Unauthorized: Invalid user type" });
       } else {
         req.userId = decoded.userId;
         req.email = decoded.email;
