@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Container, Form, Header, Image } from "semantic-ui-react";
+import { NavLink } from "react-router-dom";
+import {
+  Button,
+  Container,
+  Form,
+  Grid,
+  Header,
+  Image,
+} from "semantic-ui-react";
 import MessageNotification from "../components/MessageNotification";
 import ManServer from "../images/man-server.svg";
 import { login } from "../utils/axiosUtils";
@@ -51,40 +59,52 @@ const Login: React.FC<IProps> = (props: IProps) => {
 
   return (
     <div>
-      <Container>
-        <Image
-          src={ManServer}
-          size="large"
-          centered
-          className="mainServersImg"
-        />
-        <Header as="h1">Log In</Header>
-        <Form onSubmit={onSubmit}>
-          <Form.Field>
-            <input
-              placeholder="Email"
-              type="email"
-              name="email"
-              onChange={onChange}
+      <Container text>
+        <Grid padded>
+          <Grid.Column>
+            <Image
+              src={ManServer}
+              size="large"
+              centered
+              className="mainServersImg"
             />
-          </Form.Field>
-          <Form.Field>
-            <input
-              placeholder="Password"
-              type="password"
-              name="password"
-              onChange={onChange}
-            />
-          </Form.Field>
-          <Button primary type="submit">
-            Submit
-          </Button>
-          <MessageNotification
-            showNotification={showNotification}
-            text={reqStatus.error}
-            isNegative={reqStatus.success === false}
-          />
-        </Form>
+            <Header as="h1">Log In</Header>
+            <Form onSubmit={onSubmit}>
+              <Form.Field>
+                <input
+                  placeholder="Email"
+                  type="email"
+                  name="email"
+                  onChange={onChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <input
+                  placeholder="Password"
+                  type="password"
+                  name="password"
+                  onChange={onChange}
+                />
+              </Form.Field>
+              <Button primary type="submit" fluid>
+                Submit
+              </Button>
+              <MessageNotification
+                showNotification={showNotification}
+                text={reqStatus.error}
+                isNegative={reqStatus.success === false}
+              />
+            </Form>
+          </Grid.Column>
+        </Grid>
+        <Grid padded>
+          <Grid.Column>
+            <p>
+              {`Don't have an account yet? `}
+              <NavLink to="/signup">Sign Up</NavLink>
+            </p>
+          </Grid.Column>
+        </Grid>
       </Container>
     </div>
   );
