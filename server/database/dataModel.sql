@@ -5,7 +5,8 @@ drop table IF EXISTS users cascade;
 create table users (
     id serial primary key,
     email text,
-    user_type text
+    user_type text,
+    password text,
 );
 
 create table servers (
