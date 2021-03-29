@@ -19,6 +19,14 @@ const App: React.FC = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  // notification trigger
+  const handleNotification = () => {
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
   // wrap route within private container
   const PrivateRoute: React.FC<any> = ({
     comp: Component,
@@ -49,7 +57,7 @@ const App: React.FC = () => {
                   isAuth={isAuth}
                   setIsAuth={setIsAuth}
                   showNotification={showNotification}
-                  setShowNotification={setShowNotification}
+                  handleNotification={handleNotification}
                 />
               )}
             />
@@ -63,7 +71,7 @@ const App: React.FC = () => {
               <ServerView
                 {...props}
                 showNotification={showNotification}
-                setShowNotification={setShowNotification}
+                handleNotification={handleNotification}
               />
             )}
           />

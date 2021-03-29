@@ -24,7 +24,7 @@ interface IProps {
     params: any;
   };
   showNotification: boolean;
-  setShowNotification: Function;
+  handleNotification: Function;
 }
 
 type LogEntry = {
@@ -57,7 +57,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
   });
   const [coords, setCoords] = useState<number[]>([]);
 
-  const { showNotification, setShowNotification } = props;
+  const { showNotification, handleNotification } = props;
   const { serverId } = props.match.params;
   const {
     id,
@@ -131,13 +131,6 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
 
   const isStatusActive = serverStatus === ServerStatus.ACTIVE;
 
-  const handleDismiss = () => {
-    setShowNotification(true);
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 2000);
-  };
-
   return (
     <div>
       <NavLink exact to="/">
@@ -177,9 +170,9 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
                   isStatusActive
                     ? "Service Unavailable"
                     : "OK - Waiting for new requests"
-                ).then((res: any) => {
+                ).then(() => {
                   fetchApi();
-                  handleDismiss();
+                  handleNotification();
                 })
               }
             />
