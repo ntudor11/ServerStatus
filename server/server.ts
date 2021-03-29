@@ -1,8 +1,11 @@
 import express, { Request, Response } from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 const pgPromise = require("pg-promise");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { isAuth, hashPass, secretKey } = require("./middleware");
 const { queries } = require("./database/queries");
 
 const app = express();
@@ -50,6 +53,41 @@ app.get("/api/server/:serverId", async (req: Request, res: Response) => {
   });
 });
 
+app.post("/api/login", async (req: any, res: Response) => {
+  const { email, password } = req;
+  // verify if the user exists in the db
+  const dbUser = await db.one(queries.readUserByEmail, email.toLowerCase());
+  if (!dbUser) {
+    return res.send({ error: "User not found" });
+  }
+  const { id, email: dbEmail, userType, password: dbPassword } = dbUser;
+  // compare password from req with hashed password from db
+  if (!bcrypt.compareSync(password, dbPassword)) {
+    return res.send({ error: "Wrong password" });
+  }
+  // JWT sign token
+  const token = jwt.sign({ id, dbEmail, userType }, secretKey, {
+    expiresIn: "2h",
+  });
+  // return token
+  return res
+    .cookie("token", token, { httpOnly: true })
+    .send({ success: true, id });
+});
+
+app.post("/api/signup", async (req: any, res: Response) => {
+  const { email, password, userType } = req;
+  // verify if the user exists in the db
+  const dbUser = await db.one(queries.readUserByEmail, email.toLowerCase());
+  if (!dbUser.email) {
+    const hash = hashPass(password);
+    // create user
+    await db.none(queries.writeUser, [email, userType, hash]);
+    return res.send({ email, success: true });
+  }
+  return res.send({ error: "This email is already registered" });
+});
+
 app.post("/api/changeStatus", async (req: Request, res: Response) => {
   const { serverId, serverStatus, statusCode, message } = req.body;
   const now = Date.now();
@@ -70,6 +108,14 @@ app.post("/api/changeStatus", async (req: Request, res: Response) => {
   } catch (err) {
     return res.send({ err });
   }
+});
+
+app.get("/api/checkToken", isAuth(), (req: any, res: Response) => {
+  res.send({
+    userId: req.userId,
+    emailAddress: req.emailAddress,
+    type: req.userType,
+  });
 });
 
 app.listen(PORT, () => console.log(`⚡️ Server running on port ${PORT} ⚡️`));
