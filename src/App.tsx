@@ -9,6 +9,8 @@ import "semantic-ui-css/semantic.min.css";
 
 const App: React.FC = () => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
+  // reusable notification boolean
+  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   useEffect(() => {
     // fetch authentication status and store in hook if user is authenticated
@@ -42,7 +44,13 @@ const App: React.FC = () => {
               exact
               path="/"
               render={(props: any) => (
-                <Login {...props} isAuth={isAuth} setIsAuth={setIsAuth} />
+                <Login
+                  {...props}
+                  isAuth={isAuth}
+                  setIsAuth={setIsAuth}
+                  showNotification={showNotification}
+                  setShowNotification={setShowNotification}
+                />
               )}
             />
           ) : (
@@ -51,7 +59,13 @@ const App: React.FC = () => {
           <PrivateRoute
             exact
             path="/server/:serverId"
-            comp={(props: any) => <ServerView {...props} />}
+            comp={(props: any) => (
+              <ServerView
+                {...props}
+                showNotification={showNotification}
+                setShowNotification={setShowNotification}
+              />
+            )}
           />
           {/* empty route for 404 page */}
           <Route exact render={() => <NotFound />} />

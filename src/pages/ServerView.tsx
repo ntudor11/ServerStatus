@@ -23,6 +23,8 @@ interface IProps {
   match: {
     params: any;
   };
+  showNotification: boolean;
+  setShowNotification: Function;
 }
 
 type LogEntry = {
@@ -54,7 +56,8 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
     ipDetails: {},
   });
   const [coords, setCoords] = useState<number[]>([]);
-  const [showNotification, setShowNotification] = useState<boolean>(false);
+
+  const { showNotification, setShowNotification } = props;
   const { serverId } = props.match.params;
   const {
     id,
