@@ -11,12 +11,17 @@ const App: React.FC = () => {
   useEffect(() => {
     // fetch authentication status and store in hook if user is authenticated
     fetch(`/api/checkToken`)
-      .then((res: any) => res.status === 200 && setIsAuth(true))
+      .then((res: Response) => res.status === 200 && setIsAuth(true))
       .catch((error) => console.log(error));
   }, []);
 
   // wrap route within private container
-  const PrivateRoute: any = ({ comp: Component, ...rest }: { comp: any }) => (
+  const PrivateRoute: React.FC<any> = ({
+    comp: Component,
+    ...rest
+  }: {
+    comp: any;
+  }) => (
     <Route
       {...rest}
       render={(props) =>
