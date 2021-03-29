@@ -25,7 +25,7 @@ app.use(cookieParser());
 // GET route for retrieving the server list
 app.get("/api/servers", async (req: Request, res: Response) => {
   const servers = await db.any(queries.readServers);
-  res.send(servers);
+  res.status(200).send(servers);
 });
 
 app.get("/api/server/:serverId", async (req: Request, res: Response) => {
@@ -49,21 +49,24 @@ app.get("/api/server/:serverId", async (req: Request, res: Response) => {
   };
 
   getServer().then((server: any) => {
-    res.send(server);
+    res.status(200).send(server);
   });
 });
 
-app.post("/api/login", async (req: any, res: Response) => {
-  const { email, password } = req;
+app.post("/api/login", async (req: Request, res: Response) => {
+  const { email, password } = req.body;
   // verify if the user exists in the db
-  const dbUser = await db.one(queries.readUserByEmail, email.toLowerCase());
+  const dbUser = await db.oneOrNone(
+    queries.readUserByEmail,
+    email.toLowerCase()
+  );
   if (!dbUser) {
-    return res.send({ error: "User not found" });
+    return res.status(401).send({ success: false, error: "User not found" });
   }
   const { id, email: dbEmail, userType, password: dbPassword } = dbUser;
   // compare password from req with hashed password from db
   if (!bcrypt.compareSync(password, dbPassword)) {
-    return res.send({ error: "Wrong password" });
+    return res.status(401).send({ error: "Wrong password" });
   }
   // JWT sign token
   const token = jwt.sign({ id, dbEmail, userType }, secretKey, {
@@ -83,9 +86,14 @@ app.post("/api/signup", async (req: any, res: Response) => {
     const hash = hashPass(password);
     // create user
     await db.none(queries.writeUser, [email, userType, hash]);
-    return res.send({ email, success: true });
+    return res.status(200).send({
+      message: "Your account was created successfully",
+      success: true,
+    });
   }
-  return res.send({ error: "This email is already registered" });
+  return res
+    .status(200)
+    .send({ success: false, error: "This email is already registered" });
 });
 
 app.post("/api/changeStatus", async (req: Request, res: Response) => {
@@ -101,12 +109,11 @@ app.post("/api/changeStatus", async (req: Request, res: Response) => {
       serverId,
     ]);
 
-    return res.send({
-      status: 200,
+    return res.status(200).send({
       message: "ok",
     });
   } catch (err) {
-    return res.send({ err });
+    return res.send({ error: err });
   }
 });
 

@@ -6,7 +6,7 @@ create table users (
     id serial primary key,
     email text,
     user_type text,
-    password text,
+    password text
 );
 
 create table servers (
