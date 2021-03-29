@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Servers from "./pages/Servers";
 import ServerView from "./pages/ServerView";
+import { NotAuthorized, NotFound } from "./components/ErrorPages";
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
 
@@ -26,7 +27,7 @@ const App: React.FC = () => {
       {...rest}
       render={(props) =>
         // render component if user is authenticated
-        isAuth ? <Component {...props} /> : <p>401 Unauthorized</p>
+        isAuth ? <Component {...props} /> : <NotAuthorized />
       }
     />
   );
@@ -41,6 +42,8 @@ const App: React.FC = () => {
             path="/server/:serverId"
             comp={(props: any) => <ServerView {...props} />}
           />
+          {/* empty route for 404 page */}
+          <Route exact render={() => <NotFound />} />
         </Switch>
       </div>
     </Router>
