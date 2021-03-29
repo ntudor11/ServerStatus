@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Button, Container, Form, Header, Image } from "semantic-ui-react";
+import MessageNotification from "../components/MessageNotification";
 import ManServer from "../images/man-server.svg";
 import { login } from "../utils/axiosUtils";
 
 interface IProps {
   setAuth: Function;
   history: any;
+  showNotification: boolean;
+  handleNotification: Function;
 }
 
 export interface IUserState {
@@ -14,7 +17,11 @@ export interface IUserState {
 }
 
 const Login: React.FC<IProps> = (props: IProps) => {
+  // hook for user object
   const [user, setUser] = useState({ email: "", password: "" });
+  // hook for notification status
+  const [reqStatus, setReqStatus] = useState<any>({});
+  const { handleNotification, showNotification } = props;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -36,7 +43,10 @@ const Login: React.FC<IProps> = (props: IProps) => {
           setUser({ email: "", password: "" });
         }
       })
-      .catch((err: any) => console.log("err is", err.response.data));
+      .catch((err: any) => {
+        setReqStatus(err.response.data);
+        handleNotification();
+      });
   };
 
   return (
@@ -69,6 +79,11 @@ const Login: React.FC<IProps> = (props: IProps) => {
           <Button primary type="submit">
             Submit
           </Button>
+          <MessageNotification
+            showNotification={showNotification}
+            text={reqStatus.error}
+            isNegative={reqStatus.success === false}
+          />
         </Form>
       </Container>
     </div>
