@@ -10,6 +10,8 @@ export const login = async (user: any) =>
 export const signup = async (user: any) =>
   await axios.post("/api/signup", user);
 
+export const logout = () => axios.post("/api/logout");
+
 export const changeStatus = async (
   serverId: string,
   serverStatus: ServerStatus,

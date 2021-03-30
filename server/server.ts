@@ -99,6 +99,8 @@ app.post("/api/signup", async (req: any, res: Response) => {
     .send({ success: false, error: "This email is already registered" });
 });
 
+app.post("/api/logout", (_, res) => res.cookie("token", false).send("OK"));
+
 app.post("/api/changeStatus", async (req: Request, res: Response) => {
   const { serverId, serverStatus, statusCode, message } = req.body;
   const now = Date.now();
