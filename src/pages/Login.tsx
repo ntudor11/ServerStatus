@@ -46,7 +46,7 @@ const Login: React.FC<IProps> = (props: IProps) => {
       .then(({ data }: { data: any }) => {
         if (data.success) {
           setIsAuth(true);
-          history.push("/");
+          history.push("/servers");
         } else {
           setUser({ email: "", password: "" });
         }

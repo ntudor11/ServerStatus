@@ -23,6 +23,7 @@ const ErrorPageTemplate: React.FC<any> = (props: any) => {
     setIsAuth(false);
     history.push(`/`);
   };
+  console.log(isAuth);
 
   return (
     <div>
@@ -48,14 +49,15 @@ const ErrorPageTemplate: React.FC<any> = (props: any) => {
   );
 };
 
-export const NotFound: React.FC = () => {
+export const NotFound: React.FC<any> = (props: any) => {
+  const { isAuth } = props;
   return (
     <ErrorPageTemplate
       image={NotFoundImg}
       header="Not Found"
       text={`There is nothing to display here, at the moment (yet). Go back to safety.`}
       buttonText="Go back"
-      buttonTo="/"
+      buttonTo={isAuth ? "/servers" : "/"}
     />
   );
 };

@@ -16,7 +16,12 @@ const NavBar: React.FC<any> = (props: any) => {
 
   return (
     <Menu size="huge" pointing secondary id="navBar">
-      <Menu.Item as={NavLink} exact to="/" name="home" />
+      <Menu.Item
+        as={NavLink}
+        exact
+        to={isAuth ? "/servers" : "/"}
+        name="home"
+      />
 
       {isAuth && (
         <Menu.Menu position="right">

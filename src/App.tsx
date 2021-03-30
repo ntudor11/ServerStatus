@@ -62,49 +62,41 @@ const App: React.FC = () => {
               />
             )}
           />
-          {!isAuth ? (
-            <>
-              <Route
-                exact
-                path={["/", "/login"]}
-                render={(props: any) => (
-                  <Login
-                    {...props}
-                    isAuth={isAuth}
-                    setIsAuth={setIsAuth}
-                    showNotification={showNotification}
-                    handleNotification={handleNotification}
-                  />
-                )}
-              />
+          <PrivateRoute
+            exact
+            path="/servers"
+            comp={(props: any) => <Servers {...props} setIsAuth={setIsAuth} />}
+          />
 
-              <Route
-                exact
-                path="/signup"
-                render={(props: any) => (
-                  <Signup
-                    {...props}
-                    isAuth={isAuth}
-                    setIsAuth={setIsAuth}
-                    showNotification={showNotification}
-                    handleNotification={handleNotification}
-                  />
-                )}
+          <Route
+            exact
+            path={["/", "/login"]}
+            render={(props: any) => (
+              <Login
+                {...props}
+                isAuth={isAuth}
+                setIsAuth={setIsAuth}
+                showNotification={showNotification}
+                handleNotification={handleNotification}
               />
-            </>
-          ) : (
-            <>
-              <PrivateRoute
-                exact
-                path="/"
-                comp={(props: any) => (
-                  <Servers {...props} setIsAuth={setIsAuth} />
-                )}
+            )}
+          />
+
+          <Route
+            exact
+            path="/signup"
+            render={(props: any) => (
+              <Signup
+                {...props}
+                isAuth={isAuth}
+                setIsAuth={setIsAuth}
+                showNotification={showNotification}
+                handleNotification={handleNotification}
               />
-            </>
-          )}
+            )}
+          />
           {/* empty route for 404 page */}
-          <Route exact render={() => <NotFound />} />
+          <Route render={() => <NotFound isAuth={isAuth} />} />
         </Switch>
       </div>
     </Router>
