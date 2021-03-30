@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Servers from "./pages/Servers";
 import ServerView from "./pages/ServerView";
 import { NotAuthorized, NotFound } from "./components/ErrorPages";
@@ -48,19 +49,35 @@ const App: React.FC = () => {
       <div className="App">
         <Switch>
           {!isAuth ? (
-            <Route
-              exact
-              path="/"
-              render={(props: any) => (
-                <Login
-                  {...props}
-                  isAuth={isAuth}
-                  setIsAuth={setIsAuth}
-                  showNotification={showNotification}
-                  handleNotification={handleNotification}
-                />
-              )}
-            />
+            <>
+              <Route
+                exact
+                path={["/", "/login"]}
+                render={(props: any) => (
+                  <Login
+                    {...props}
+                    isAuth={isAuth}
+                    setIsAuth={setIsAuth}
+                    showNotification={showNotification}
+                    handleNotification={handleNotification}
+                  />
+                )}
+              />
+
+              <Route
+                exact
+                path="/signup"
+                render={(props: any) => (
+                  <Signup
+                    {...props}
+                    isAuth={isAuth}
+                    setIsAuth={setIsAuth}
+                    showNotification={showNotification}
+                    handleNotification={handleNotification}
+                  />
+                )}
+              />
+            </>
           ) : (
             <PrivateRoute exact path="/" comp={() => <Servers />} />
           )}
