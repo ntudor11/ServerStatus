@@ -13,7 +13,7 @@ import ManServer from "../images/man-server.svg";
 import { login } from "../utils/axiosUtils";
 
 interface IProps {
-  setAuth: Function;
+  setIsAuth: Function;
   history: any;
   showNotification: boolean;
   handleNotification: Function;
@@ -41,18 +41,18 @@ const Login: React.FC<IProps> = (props: IProps) => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { history, setAuth } = props;
+    const { history, setIsAuth } = props;
     await login(user)
       .then(({ data }: { data: any }) => {
         if (data.success) {
-          setAuth(true);
+          setIsAuth(true);
           history.push("/");
         } else {
           setUser({ email: "", password: "" });
         }
       })
       .catch((err: any) => {
-        setReqStatus(err.response.data);
+        setReqStatus(err.response?.data);
         handleNotification();
       });
   };
@@ -91,8 +91,8 @@ const Login: React.FC<IProps> = (props: IProps) => {
               </Button>
               <MessageNotification
                 showNotification={showNotification}
-                text={reqStatus.error}
-                isNegative={reqStatus.success === false}
+                text={reqStatus?.error ?? ""}
+                isNegative={reqStatus?.success === false ?? false}
               />
             </Form>
           </Grid.Column>

@@ -79,10 +79,13 @@ app.post("/api/login", async (req: Request, res: Response) => {
 });
 
 app.post("/api/signup", async (req: any, res: Response) => {
-  const { email, password, userType } = req;
+  const { email, password, userType } = req.body;
   // verify if the user exists in the db
-  const dbUser = await db.one(queries.readUserByEmail, email.toLowerCase());
-  if (!dbUser.email) {
+  const dbUser = await db.oneOrNone(
+    queries.readUserByEmail,
+    email.toLowerCase()
+  );
+  if (!dbUser) {
     const hash = hashPass(password);
     // create user
     await db.none(queries.writeUser, [email, userType, hash]);

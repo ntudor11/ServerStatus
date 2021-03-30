@@ -1,12 +1,14 @@
 import axios from "axios";
 import { ServerStatus } from "./serverUtils";
-import { IUserState } from "../pages/Login";
 
-export const login = async (user: IUserState) =>
+export const login = async (user: any) =>
   await axios.post("/api/login", {
     email: user.email,
     password: user.password,
   });
+
+export const signup = async (user: any) =>
+  await axios.post("/api/signup", user);
 
 export const changeStatus = async (
   serverId: string,
