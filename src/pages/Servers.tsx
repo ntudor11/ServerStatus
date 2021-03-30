@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Grid, Header, Image } from "semantic-ui-react";
+import { NotAuthorized } from "../components/ErrorPages";
 import ServerCard from "../components/ServerCard";
 import ServerMonitor from "../images/server-monitor.svg";
 import { ServerStatus } from "../utils/serverUtils";
@@ -28,8 +29,9 @@ const Servers: React.FC = () => {
 
   // sort and map through servers array
   const getServerCards = (array: Server[]) =>
+    array?.length &&
+    // sort items by name in alphabetical order
     array
-      // sort items by name in alphabetical order
       .sort((a: Server, b: Server) => a.serverName.localeCompare(b.serverName))
       // map and return server card item
       .map((item: Server) => (
@@ -43,7 +45,7 @@ const Servers: React.FC = () => {
         />
       ));
 
-  return (
+  return servers.length ? (
     <div>
       <Container>
         <Image
@@ -65,6 +67,8 @@ const Servers: React.FC = () => {
         </Grid>
       </Container>
     </div>
+  ) : (
+    <NotAuthorized />
   );
 };
 

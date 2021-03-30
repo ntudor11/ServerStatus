@@ -18,6 +18,7 @@ import { formatTime } from "../utils/timeUtils";
 import { changeStatus } from "../utils/axiosUtils";
 import MessageNotification from "../components/MessageNotification";
 import moment from "moment";
+import { NotAuthorized } from "../components/ErrorPages";
 
 interface IProps {
   match: {
@@ -42,6 +43,7 @@ interface IState {
   serverStatus: ServerStatus;
   avgUptime: number;
   serverLog: LogEntry[];
+  error?: any;
 }
 
 const ServerView: React.FC<IProps> = (props: IProps) => {
@@ -99,7 +101,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
 
   // returns list item for each log entry from server if list is not empty
   const listItem = (array: LogEntry[]) =>
-    array.length ? (
+    array?.length ? (
       array
         .sort((a: LogEntry, b: LogEntry) => {
           if (moment(a.time) === moment(b.time)) {
@@ -131,7 +133,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
 
   const isStatusActive = serverStatus === ServerStatus.ACTIVE;
 
-  return (
+  return !server.error ? (
     <div>
       <NavLink exact to="/">
         <Icon
@@ -218,6 +220,8 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
         </Grid>
       </Container>
     </div>
+  ) : (
+    <NotAuthorized />
   );
 };
 
