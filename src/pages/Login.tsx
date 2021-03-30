@@ -52,7 +52,7 @@ const Login: React.FC<IProps> = (props: IProps) => {
         }
       })
       .catch((err: any) => {
-        setReqStatus(err.response?.data);
+        setReqStatus({ ...err.response?.data, success: false });
         handleNotification();
       });
   };
