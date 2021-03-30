@@ -26,6 +26,7 @@ interface IProps {
   };
   showNotification: boolean;
   handleNotification: Function;
+  setIsAuth: Function;
 }
 
 type LogEntry = {
@@ -59,7 +60,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
   });
   const [coords, setCoords] = useState<number[]>([]);
 
-  const { showNotification, handleNotification } = props;
+  const { showNotification, handleNotification, setIsAuth } = props;
   const { serverId } = props.match.params;
   const {
     id,
@@ -221,7 +222,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
       </Container>
     </div>
   ) : (
-    <NotAuthorized />
+    <NotAuthorized isAuth={true} setIsAuth={setIsAuth} />
   );
 };
 

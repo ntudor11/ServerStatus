@@ -3,7 +3,7 @@ import { NavLink, withRouter } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { logout } from "../utils/axiosUtils";
 
-const NavBar = (props: any) => {
+const NavBar: React.FC<any> = (props: any) => {
   const { isAuth, setIsAuth } = props;
 
   const logOut = (e: any) => {

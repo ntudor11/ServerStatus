@@ -50,6 +50,18 @@ const App: React.FC = () => {
       <div className="App">
         <NavBar isAuth={isAuth} setIsAuth={setIsAuth} />
         <Switch>
+          <PrivateRoute
+            exact
+            path="/server/:serverId"
+            comp={(props: any) => (
+              <ServerView
+                {...props}
+                showNotification={showNotification}
+                handleNotification={handleNotification}
+                setIsAuth={setIsAuth}
+              />
+            )}
+          />
           {!isAuth ? (
             <>
               <Route
@@ -81,19 +93,16 @@ const App: React.FC = () => {
               />
             </>
           ) : (
-            <PrivateRoute exact path="/" comp={() => <Servers />} />
-          )}
-          <PrivateRoute
-            exact
-            path="/server/:serverId"
-            comp={(props: any) => (
-              <ServerView
-                {...props}
-                showNotification={showNotification}
-                handleNotification={handleNotification}
+            <>
+              <PrivateRoute
+                exact
+                path="/"
+                comp={(props: any) => (
+                  <Servers {...props} setIsAuth={setIsAuth} />
+                )}
               />
-            )}
-          />
+            </>
+          )}
           {/* empty route for 404 page */}
           <Route exact render={() => <NotFound />} />
         </Switch>

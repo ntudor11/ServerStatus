@@ -15,7 +15,9 @@ type Server = {
   avgUptime: number;
 };
 
-const Servers: React.FC = () => {
+const Servers: React.FC<{ setIsAuth: Function }> = (props: {
+  setIsAuth: Function;
+}) => {
   const [servers, setServers] = useState<Server[]>([]);
 
   useEffect(() => {
@@ -26,6 +28,7 @@ const Servers: React.FC = () => {
         setServers(data);
       });
   }, []);
+  const { setIsAuth } = props;
 
   // sort and map through servers array
   const getServerCards = (array: Server[]) =>
@@ -68,7 +71,7 @@ const Servers: React.FC = () => {
       </Container>
     </div>
   ) : (
-    <NotAuthorized />
+    <NotAuthorized isAuth={true} setIsAuth={setIsAuth} />
   );
 };
 
