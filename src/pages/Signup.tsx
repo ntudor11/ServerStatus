@@ -86,6 +86,7 @@ const Signup: React.FC<IProps> = (props: IProps) => {
     array.map((item: any) => {
       return (
         <Form.Field
+          key={item}
           label={item}
           control="input"
           type="radio"
@@ -137,7 +138,7 @@ const Signup: React.FC<IProps> = (props: IProps) => {
                   onChange={onChange}
                 />
               </Form.Field>
-              <Form.Group inline grouped>
+              <Form.Group inline>
                 <label>User Type</label>
                 {radioInputs(userTypes)}
               </Form.Group>
