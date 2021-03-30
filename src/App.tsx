@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Servers from "./pages/Servers";
 import ServerView from "./pages/ServerView";
+import NavBar from "./components/NavBar";
 import { NotAuthorized, NotFound } from "./components/ErrorPages";
 import "./App.css";
 import "semantic-ui-css/semantic.min.css";
@@ -47,6 +48,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
+        <NavBar isAuth={isAuth} setIsAuth={setIsAuth} />
         <Switch>
           {!isAuth ? (
             <>

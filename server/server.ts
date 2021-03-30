@@ -23,35 +23,43 @@ app.use(express.json());
 app.use(cookieParser());
 
 // GET route for retrieving the server list
-app.get("/api/servers", async (req: Request, res: Response) => {
-  const servers = await db.any(queries.readServers);
-  res.status(200).send(servers);
-});
+app.get(
+  "/api/servers",
+  isAuth("SysAdmin"),
+  async (req: Request, res: Response) => {
+    const servers = await db.any(queries.readServers);
+    res.status(200).send(servers);
+  }
+);
 
-app.get("/api/server/:serverId", async (req: Request, res: Response) => {
-  const { serverId } = req.params;
+app.get(
+  "/api/server/:serverId",
+  isAuth("SysAdmin"),
+  async (req: Request, res: Response) => {
+    const { serverId } = req.params;
 
-  const getServer = () => {
-    return db.task((t: any) => {
-      return t.oneOrNone(queries.readServer, [serverId], (server: any) => {
-        if (server) {
-          return t
-            .any(queries.readServerMessages, [server.id])
-            .then((data: any) => {
-              server.serverLog = data;
-              return server;
-            });
-        } else {
-          return { error: "Cannot find current server" };
-        }
+    const getServer = () => {
+      return db.task((t: any) => {
+        return t.oneOrNone(queries.readServer, [serverId], (server: any) => {
+          if (server) {
+            return t
+              .any(queries.readServerMessages, [server.id])
+              .then((data: any) => {
+                server.serverLog = data;
+                return server;
+              });
+          } else {
+            return { error: "Cannot find current server" };
+          }
+        });
       });
-    });
-  };
+    };
 
-  getServer().then((server: any) => {
-    res.status(200).send(server);
-  });
-});
+    getServer().then((server: any) => {
+      res.status(200).send(server);
+    });
+  }
+);
 
 app.post("/api/login", async (req: Request, res: Response) => {
   const { email, password } = req.body;

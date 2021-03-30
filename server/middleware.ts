@@ -17,7 +17,7 @@ export const isAuth = (userType?: string | string[]) => (
     jwt.verify(token, secretKey, (err: any, decoded: any) => {
       if (err) {
         res.status(401).send({ error: "Unauthorized: Invalid token" });
-      } else if (userType && !userType.includes(decoded.type)) {
+      } else if (userType && !userType.includes(decoded.userType)) {
         next();
         res.status(401).send({ error: "Unauthorized: Invalid user type" });
       } else {
