@@ -136,7 +136,7 @@ const ServerView: React.FC<IProps> = (props: IProps) => {
 
   return !server.error ? (
     <div>
-      <NavLink exact to="/">
+      <NavLink exact to="/servers">
         <Icon
           name="arrow alternate circle left"
           className="backArrow"
